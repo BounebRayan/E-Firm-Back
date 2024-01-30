@@ -25,6 +25,7 @@ export class CaseService {
   }
 
   async findCasesByLawyer(idLawyer: string) {
+    console.log(idLawyer);
     return await this.casesRepository.findBy({ idLawyer: idLawyer });
   }
 
