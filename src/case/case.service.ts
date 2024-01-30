@@ -29,6 +29,7 @@ export class CaseService {
   }
 
   async findCasesByClient(idClient: string) {
+    console.log(idClient);
     return await this.casesRepository.findBy({ idClient: idClient });
   }
 
