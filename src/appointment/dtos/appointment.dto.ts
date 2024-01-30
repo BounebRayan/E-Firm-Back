@@ -1,10 +1,7 @@
 import { Optional } from '@nestjs/common';
-import { IsEmail, IsNotEmpty, IsDate, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class AppointmentDto {
-  @Optional()
-  id: number; // Assuming the id is of type number for an auto-incremented field in MySQL<
-
   @IsNotEmpty()
   @IsEmail()
   lawyerEmail: string;
@@ -14,8 +11,7 @@ export class AppointmentDto {
   clientEmail: string;
 
   @Optional()
-  @IsDate()
-  date: Date;
+  date: string;
 
   @IsNotEmpty()
   @IsString()
@@ -30,5 +26,5 @@ export class AppointmentDto {
   status: string;
 
   @Optional()
-  todos: string;
+  todos: string[];
 }

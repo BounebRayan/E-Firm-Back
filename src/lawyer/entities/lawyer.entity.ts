@@ -1,16 +1,15 @@
-import { CaseEntity } from 'src/case/entity/case.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class LawyerEntity {
+export class lawyerentity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  firstname: string;
+  name: string;
 
   @Column()
-  lastName: string;
+  FamilyName: string;
 
   @Column({ unique: true })
   email: string;
@@ -36,6 +35,6 @@ export class LawyerEntity {
   @Column()
   city: string;
 
-  @OneToMany(() => CaseEntity, (caseEntity) => caseEntity.lawyer)
-  cases: CaseEntity[];
+  @Column()
+  rating: number;
 }

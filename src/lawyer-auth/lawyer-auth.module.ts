@@ -4,7 +4,10 @@ import { LawyerAuthController } from './lawyer-auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LawyerEntity } from 'src/lawyer/entities/lawyer.entity';
+import { lawyerentity } from 'src/lawyer/entities/lawyer.entity';
+import * as dotenv from 'dotenv';
+import { JwtLawyerStrategy } from './jwt-lawyer.strategy';
+dotenv.config();
 
 @Module({
   imports: [
@@ -13,9 +16,9 @@ import { LawyerEntity } from 'src/lawyer/entities/lawyer.entity';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: 3600 },
     }),
-    TypeOrmModule.forFeature([LawyerEntity]),
+    TypeOrmModule.forFeature([lawyerentity]),
   ],
-  providers: [LawyerAuthService],
+  providers: [LawyerAuthService, JwtLawyerStrategy],
   controllers: [LawyerAuthController],
 })
 export class LawyerAuthModule {}

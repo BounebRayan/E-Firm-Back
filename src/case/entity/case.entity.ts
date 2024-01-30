@@ -1,16 +1,8 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { CasesStatusEnum } from '../enums/CasesStatusEnum';
-import { ClientEntity } from 'src/client/entities/client.entity';
-import { LawyerEntity } from 'src/lawyer/entities/lawyer.entity';
 
 @Entity()
-export class CaseEntity {
+export class caseentity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
@@ -21,14 +13,11 @@ export class CaseEntity {
     default: CasesStatusEnum.waiting,
   })
   etat: CasesStatusEnum;
+  @Column('simple-array')
+  todos: string[];
+
   @Column()
-  todos: string;
-
-  @ManyToOne(() => ClientEntity, (client) => client.cases)
-  @JoinColumn()
-  client: ClientEntity;
-
-  @ManyToOne(() => LawyerEntity, (lawyer) => lawyer.cases)
-  @JoinColumn()
-  lawyer: LawyerEntity;
+  idLawyer: string;
+  @Column()
+  idClient: string;
 }

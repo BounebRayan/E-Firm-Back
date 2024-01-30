@@ -1,9 +1,20 @@
-import { PickType } from '@nestjs/mapped-types';
-import { AppointmentDto } from './appointment.dto';
+import { Optional } from '@nestjs/common';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateAppointmentDTO extends PickType(AppointmentDto, [
-  'status',
-  'description',
-  'todos',
-  'date',
-]) {}
+export class UpdateAppointmentDTO {
+  @Optional()
+  @IsString()
+  date: string;
+
+  @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  status: string;
+
+  @Optional()
+  @IsArray()
+  todos: string[];
+}

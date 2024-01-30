@@ -2,10 +2,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Module } from '@nestjs/common';
 import { ClientAuthService } from './client-auth.service';
-import { JwtClientStrategy } from './jwt-client.strategy';
-import { ClientEntity } from 'src/client/entities/client.entity';
+import { cliententity } from 'src/client/entities/client.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientAuthController } from './client-auth.controller';
+import * as dotenv from 'dotenv';
+import { JwtClientStrategy } from './jwt-client.strategy';
+dotenv.config();
 
 @Module({
   imports: [
@@ -14,7 +16,7 @@ import { ClientAuthController } from './client-auth.controller';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: 3600 },
     }),
-    TypeOrmModule.forFeature([ClientEntity]),
+    TypeOrmModule.forFeature([cliententity]),
   ],
   providers: [ClientAuthService, JwtClientStrategy],
   controllers: [ClientAuthController],

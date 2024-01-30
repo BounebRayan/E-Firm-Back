@@ -1,17 +1,16 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber, Min } from 'class-validator';
+import { IsEmail, IsNotEmpty, Min } from 'class-validator';
 
 export class SignUpDto {
   @IsNotEmpty()
-  firstname: string;
+  name: string;
   @IsNotEmpty()
-  lastname: string;
+  FamilyName: string;
   @IsNotEmpty()
   @IsEmail()
   email: string;
   @IsNotEmpty()
   password: string;
   @IsNotEmpty()
-  @IsPhoneNumber()
   phoneNumber: string;
   @IsNotEmpty()
   @Min(18)

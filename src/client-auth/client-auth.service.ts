@@ -5,7 +5,7 @@ import { SignInDto } from './dtos/signin.dto';
 
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ClientEntity } from '../client/entities/client.entity';
+import { cliententity } from '../client/entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PayloadDto } from './dtos/payload.dto';
@@ -14,13 +14,16 @@ import { SignInResponseDto } from './dtos/signin-response.dto';
 @Injectable()
 export class ClientAuthService {
   constructor(
-    @InjectRepository(ClientEntity)
-    private ClientRepository: Repository<ClientEntity>,
+    @InjectRepository(cliententity)
+    private ClientRepository: Repository<cliententity>,
     private myJwtService: JwtService,
   ) {}
-  async signup(credentials: SignUpDto): Promise<ClientEntity> {
-    const user = this.ClientRepository.findOneBy({ email: credentials.email });
+  async signup(credentials: SignUpDto): Promise<SignInResponseDto> {
+    const user = await this.ClientRepository.findOneBy({
+      email: credentials.email,
+    });
     if (user) {
+      console.log(user);
       throw new BadRequestException(
         'A user with the same email address already exists try signing-in',
       );
@@ -30,7 +33,13 @@ export class ClientAuthService {
       credentials.password = hashedPassword;
       const newUser = await this.ClientRepository.save(credentials);
       delete newUser.password;
-      return newUser;
+      const payload: PayloadDto = {
+        email: newUser.email,
+      };
+      const jwt = this.myJwtService.sign(payload);
+      return {
+        token: jwt,
+      };
     }
   }
 

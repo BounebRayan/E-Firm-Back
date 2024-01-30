@@ -3,17 +3,19 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LawyerEntity } from '../lawyer/entities/lawyer.entity';
+import { lawyerentity } from '../lawyer/entities/lawyer.entity';
 import { PayloadDto } from './dtos/payload.dto';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
-export class JwtClientStrategy extends PassportStrategy(
+export class JwtLawyerStrategy extends PassportStrategy(
   Strategy,
   'jwt-lawyer',
 ) {
   constructor(
-    @InjectRepository(LawyerEntity)
-    private LawyerRepository: Repository<LawyerEntity>,
+    @InjectRepository(lawyerentity)
+    private LawyerRepository: Repository<lawyerentity>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

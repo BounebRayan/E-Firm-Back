@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   dotenv.config();
+  console.log(process.env.JWT_SECRET);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -13,7 +14,8 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: 'http://localhost:4200/',
+    origin: 'http://localhost:4200', // Specify the client origin explicitly
+    credentials: true,
   });
   await app.listen(3000);
 }

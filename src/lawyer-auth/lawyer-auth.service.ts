@@ -5,7 +5,7 @@ import { SignInDto } from './dtos/signin.dto';
 
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LawyerEntity } from '../lawyer/entities/lawyer.entity';
+import { lawyerentity } from '../lawyer/entities/lawyer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PayloadDto } from './dtos/payload.dto';
@@ -14,12 +14,14 @@ import { SignInResponseDto } from './dtos/signin-response.dto';
 @Injectable()
 export class LawyerAuthService {
   constructor(
-    @InjectRepository(LawyerEntity)
-    private LawyerRepository: Repository<LawyerEntity>,
+    @InjectRepository(lawyerentity)
+    private LawyerRepository: Repository<lawyerentity>,
     private myJwtService: JwtService,
   ) {}
-  async signup(credentials: SignUpDto): Promise<LawyerEntity> {
-    const user = this.LawyerRepository.findOneBy({ email: credentials.email });
+  async signup(credentials: SignUpDto): Promise<SignInResponseDto> {
+    const user = await this.LawyerRepository.findOneBy({
+      email: credentials.email,
+    });
     if (user) {
       throw new BadRequestException(
         'A lawyer with the same email address already exists try signing-in',
@@ -30,7 +32,11 @@ export class LawyerAuthService {
       credentials.password = hashedPassword;
       const newUser = await this.LawyerRepository.save(credentials);
       delete newUser.password;
-      return newUser;
+      const payload: PayloadDto = {
+        email: newUser.email,
+      };
+      const jwt = this.myJwtService.sign(payload);
+      return { token: jwt };
     }
   }
 
